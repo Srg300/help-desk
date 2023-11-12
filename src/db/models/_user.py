@@ -3,8 +3,8 @@ import uuid
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from app.db.base import Base, created_datetime, int64_pk, str_256, updated_datetime
-from app.db.models import Division
+from db.base import Base, created_datetime, int64_pk, str_256, updated_datetime
+from db.models import Division
 
 
 class User(Base):
