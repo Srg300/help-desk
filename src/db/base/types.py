@@ -25,6 +25,7 @@ int64_pk = Annotated[
         BigInteger,
         Identity(always=True),
         primary_key=True,
+        unique=True,
     ),
 ]
 
