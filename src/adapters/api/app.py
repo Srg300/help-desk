@@ -1,9 +1,13 @@
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
-
 from settings import AppSettings, get_settings
 
-_routers = []  # type: ignore[var-annotated]
+from . import role
+
+
+_routers = [
+    role.router,
+]
 
 
 def create_app() -> FastAPI:

@@ -15,10 +15,11 @@ class Division(Base):
     name: Mapped[str_256] = mapped_column(unique=True)
     weight: Mapped[int64] = mapped_column()
 
-    parent_id: Mapped[int64_pk | None] = mapped_column(ForeignKey("division.id"))
+    parent_id: Mapped[int | None] = mapped_column(ForeignKey("division.id"))
 
     parent: Mapped[Division | None] = relationship(
         back_populates="children",
-        remote_side=id,
-        lazy="raise",
+        remote_side="Division.id",
     )
+    children: Mapped[list[Division]] = relationship(back_populates="parent")
+    user: Mapped[list["User"]] = relationship(back_populates="division")

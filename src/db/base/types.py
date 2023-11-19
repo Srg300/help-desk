@@ -23,9 +23,15 @@ int64_pk = Annotated[
     int,
     mapped_column(
         BigInteger,
-        Identity(always=True),
         primary_key=True,
-        unique=True,
+        server_default=Identity(
+            start=1,
+            increment=1,
+            minvalue=1,
+            maxvalue=2**63 - 1,
+            cycle=False,
+            cache=1,
+        ),
     ),
 ]
 

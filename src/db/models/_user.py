@@ -11,7 +11,6 @@ class User(Base):
     __tablename__ = "user"
 
     id: Mapped[int64_pk]
-    keycloak_id: Mapped[uuid.UUID] = mapped_column(unique=True)
     username: Mapped[str_256] = mapped_column(unique=True)
     full_name: Mapped[str_256]
 
@@ -24,8 +23,8 @@ class User(Base):
     created_at: Mapped[created_datetime]
     updated_at: Mapped[updated_datetime]
 
-    division_id: Mapped[int64_pk | None] = mapped_column(ForeignKey("division.id"))
-    group_id: Mapped[int64_pk | None] = mapped_column(ForeignKey("group.id"))
-    role_id: Mapped[int64_pk | None] = mapped_column(ForeignKey("role.id"))
+    division_id: Mapped[int | None] = mapped_column(ForeignKey("division.id"))
+    group_id: Mapped[int | None] = mapped_column(ForeignKey("group.id"))
+    role_id: Mapped[int | None] = mapped_column(ForeignKey("role.id"))
 
     division: Mapped[Division | None] = relationship(back_populates="user")

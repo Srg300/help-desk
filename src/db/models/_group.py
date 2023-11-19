@@ -15,10 +15,10 @@ class Group(Base):
     name: Mapped[str_256] = mapped_column(unique=True)
     weight: Mapped[int64] = mapped_column()
 
-    parent_id: Mapped[int64_pk | None] = mapped_column(ForeignKey("group.id"))
+    parent_id: Mapped[int | None] = mapped_column(ForeignKey("group.id"))
 
     parent: Mapped[Group | None] = relationship(
         back_populates="children",
-        remote_side=id,
-        lazy="raise",
+        remote_side="Group.id",
     )
+    children: Mapped[list[Group]] = relationship(back_populates="parent")
