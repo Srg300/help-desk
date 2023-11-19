@@ -54,7 +54,6 @@ pythonpath = "src"
 source = ["src"]
 omit = [
     "src/alembic/*",
-    "src/alembic/*",
     "tests/",
 ]
 
@@ -132,8 +131,8 @@ ignore = [
     "PD", # pandas-vet
     "INP",
     "TCH001", # Move import into type-checking block
-    "TCH002",
-    "TCH003",
+    "TCH002", # Move third-party import into a type-checking block
+    "TCH003", # Found multiple type checking blocks
     "RUF001",
     "RUF002",
     "RUF003",
@@ -158,13 +157,13 @@ classmethod-decorators = ["classmethod", "pydantic.validator", "pydantic.model_v
 staticmethod-decorators = ["staticmethod"]
 
 [tool.pdm.scripts]
+app = "python -m main"
 
 lint = { composite = [
     "ruff check . --fix --show-fixes",
     "black .",
     "ruff check . --fix --show-fixes",
     "mypy .",
-    "deptry src/",
     "alembic check",
 ] }
 test = { composite = [

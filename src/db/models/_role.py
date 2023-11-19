@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from sqlalchemy.orm import Mapped, mapped_column
 
-from db.base import Base, int64, int64_pk, str_256
+from db.base import Base, int64_pk, str_256
 
 
 class Role(Base):

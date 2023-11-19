@@ -1,8 +1,8 @@
-from db.models import Role
-from .dto import RoleCreateDto
-
 from sqlalchemy.ext.asyncio import AsyncSession
-from db.base.engine import db_helper
+
+from db.models import Role
+
+from .dto import RoleCreateDto
 
 
 class RoleRepository:
@@ -10,8 +10,8 @@ class RoleRepository:
         self._session = session
 
     async def create(
-            self,
-            dto: RoleCreateDto,
+        self,
+        dto: RoleCreateDto,
     ) -> Role:
         model_db = Role(
             name=dto.name,

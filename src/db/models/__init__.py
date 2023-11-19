@@ -1,7 +1,7 @@
 from ._division import Division
-from ._user import User
-from ._role import Role
 from ._group import Group
+from ._role import Role
+from ._user import User
 
 __all__ = [
     "User",
