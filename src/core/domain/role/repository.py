@@ -1,4 +1,5 @@
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select
 
 from db.models import Role
 
@@ -13,11 +14,21 @@ class RoleRepository:
         self,
         dto: RoleCreateDto,
     ) -> Role:
-        model_db = Role(
+        return Role(
             name=dto.name,
             weight=dto.weight,
         )
-        self._session.add(model_db)
-        await self._session.commit()
-        await self._session.flush()
-        return model_db
+
+    async def get(
+            self,
+            id: int | None = None,
+            name: str | None = None,
+    ) -> Role:
+        if id:
+            stmt = select(Role).where(Role.id==id)
+        if name:
+            stmt = select(Role).where(Role.name==name)
+
+        async with self._session as session:
+            result = (await session.execute(stmt)).one()
+            return result
