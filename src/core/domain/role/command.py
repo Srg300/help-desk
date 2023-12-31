@@ -1,7 +1,7 @@
 from db.base.dependencies import get_session
 from db.models import Role
 
-from .dto import RoleCreateDto
+from .dto import RoleCreateDto, RoleUpdateDto
 from .repository import RoleRepository
 
 
@@ -21,3 +21,16 @@ class RoleCommand:
             session.add(role)
             await session.commit()
             return role
+
+    async def update(
+        self,
+        id_: int,
+        dto: RoleUpdateDto,
+    ) -> Role:
+        return await self._repository.update(id_=id_, dto=dto)
+
+    async def delete(
+        self,
+        id_: int,
+    ) -> None:
+        await self._repository.delete(id_=id_)

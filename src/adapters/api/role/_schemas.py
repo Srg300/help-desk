@@ -1,9 +1,13 @@
 from adapters.api import BaseSchema
+from core.domain.role.dto import RoleCreateDto, RoleUpdateDto
 
 
-class RoleCreateSchema(BaseSchema):
-    name: str
-    weight: int
+class RoleCreateSchema(RoleCreateDto):
+    ...
+
+
+class RoleUpdateSchema(RoleUpdateDto):
+    ...
 
 
 class RoleResponse(BaseSchema):

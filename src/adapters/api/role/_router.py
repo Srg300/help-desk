@@ -3,10 +3,9 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, status
 
 from core.domain.role.command import RoleCommand
-from core.domain.role.dto import RoleCreateDto
 from core.domain.role.service import RoleService
 
-from ._schemas import RoleCreateSchema, RoleResponse
+from ._schemas import RoleCreateSchema, RoleResponse, RoleUpdateSchema
 
 router = APIRouter(
     tags=["roles"],
@@ -17,21 +16,47 @@ command = Annotated[RoleCommand, Depends(RoleCommand)]
 service = Annotated[RoleService, Depends(RoleService)]
 
 
-@router.post("/", status_code=status.HTTP_201_CREATED, response_model=None)
+@router.post("/", status_code=status.HTTP_201_CREATED)
 async def create_role(
     schema: RoleCreateSchema,
     command: command,
 ) -> RoleResponse:
-    role = await command.create(
-        dto=RoleCreateDto(
-            name=schema.name,
-            weight=schema.weight,
-        ),
+    role = await command.create(dto=schema)
+    return RoleResponse(
+        id=role.id,
+        name=role.name,
+        weight=role.weight,
     )
-    return RoleResponse.model_validate(role)  # type: ignore[no-any-return]
 
 
-@router.get("/{id}", status_code=status.HTTP_201_CREATED, response_model=None)
-async def get_by_id(id_: int, service: service) -> RoleResponse:
-    role = await service.get_by_id(id_=id_)
-    return RoleResponse.model_validate(*role)  # type: ignore[no-any-return]
+@router.get("/{role_id}", status_code=status.HTTP_200_OK)
+async def get_by_id(role_id: int, service: service) -> RoleResponse:
+    role = await service.get_by_id(id_=role_id)
+    return RoleResponse(
+        id=role.id,
+        name=role.name,
+        weight=role.weight,
+    )
+
+
+@router.patch("/{role_id}", status_code=status.HTTP_200_OK)
+async def update(
+    role_id: int,
+    schema: RoleUpdateSchema,
+    command: command,
+) -> RoleResponse:
+    role = await command.update(
+        id_=role_id,
+        dto=schema,
+    )
+    return RoleResponse(
+        id=role.id,
+        name=role.name,
+        weight=role.weight,
+    )
+
+
+@router.delete("/{role_id}", status_code=status.HTTP_200_OK)
+async def delete_by_id(role_id: int, command: command) -> dict[str, str]:
+    await command.delete(id_=role_id)
+    return {"message": f"role by id {role_id} is deleted"}
