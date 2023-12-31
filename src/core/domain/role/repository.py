@@ -30,7 +30,7 @@ class RoleRepository:
             stmt = select(Role).where(Role.name == name)
 
         async with self._session as session:
-            return (await session.execute(stmt)).scalar_one()
+            return (await session.execute(stmt)).scalar_one_or_none()
 
     async def update(
         self,
@@ -50,8 +50,8 @@ class RoleRepository:
     async def delete(
         self,
         id_: int,
-    ) -> None:
-        stmt = delete(Role).where(Role.id == id_)
+    ) -> int:
+        stmt = delete(Role).where(Role.id == id_).returning(Role.id).returning(Role.id)
 
         async with self._session as session:
-            await session.execute(stmt)
+            return await session.execute(stmt)
