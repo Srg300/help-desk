@@ -1,4 +1,4 @@
-from sqlalchemy import delete, select, update
+from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from db.models import Role
@@ -47,11 +47,14 @@ class RoleRepository:
         async with self._session as session:
             return (await session.execute(stmt)).scalar_one()
 
-    async def delete(
+    def update_stmt(
         self,
         id_: int,
-    ) -> int:
-        stmt = delete(Role).where(Role.id == id_).returning(Role.id).returning(Role.id)
-
-        async with self._session as session:
-            return await session.execute(stmt)
+        dto: RoleUpdateDto,
+    ) -> Role:
+        return (
+            update(Role)
+            .values(**dto.model_dump(exclude_unset=True))
+            .where(Role.id == id_)
+            .returning(Role)
+        )

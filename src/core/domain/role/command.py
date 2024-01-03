@@ -3,7 +3,7 @@ from db.models import Role
 
 from .dto import RoleCreateDto, RoleUpdateDto
 from .repository import RoleRepository
-from sqlalchemy.ext.asyncio import AsyncSession
+
 
 class RoleCommand:
     def __init__(self) -> None:
@@ -27,13 +27,23 @@ class RoleCommand:
         id_: int,
         dto: RoleUpdateDto,
     ) -> Role:
-        role = await self._repository.get(id_=id_)
-        if role is None:
-            return None
-        return await self._repository.update(id_=id_, dto=dto)
+        stmt = self._repository.update_stmt(
+            id_=id_,
+            dto=dto,
+        )
+
+        async with self._session as session:
+            return (await session.execute(stmt)).scalar_one()
 
     async def delete(
         self,
         id_: int,
     ) -> int | None:
-        return await self._repository.delete(id_=id_)
+        async with self._session as session:
+            role = await session.get(ident=id_, entity=Role)
+            if role is None:
+                return None
+
+            await session.delete(role)
+            await session.commit()
+            return id_

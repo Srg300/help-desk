@@ -1,6 +1,7 @@
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, status
+
 from core.domain.role.command import RoleCommand
 from core.domain.role.service import RoleService
 
@@ -65,10 +66,8 @@ async def update(
 async def delete_by_id(
     role_id: int,
     command: command,
-    service: service,
 ) -> dict[str, str]:
-    role = await service.get_by_id(id_=role_id)
+    role = await command.delete(id_=role_id)
     if role is None:
         raise role_not_found
-    await command.delete(id_=role_id)
-    return {"message": f"role by id {role.id} is deleted"}
+    return {"message": f"role by id {role_id} is deleted"}
