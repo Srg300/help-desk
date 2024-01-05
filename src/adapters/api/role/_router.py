@@ -2,10 +2,12 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, status
 
-from core.domain.role.command import RoleCommand, role_command
-from core.domain.role.service import RoleService, role_service
+from core.domain.role.command import RoleCommand
+from core.domain.role.exception import RoleAlreadyExistsError
+from core.domain.role.service import RoleService
+from core.domain.role.utils import role_command, role_service
 
-from ._exception import role_not_found
+from ._exception import role_exist, role_not_found
 from ._schemas import RoleCreateSchema, RoleResponse, RoleUpdateSchema
 
 router = APIRouter(
@@ -13,12 +15,16 @@ router = APIRouter(
     prefix="/roles",
 )
 
+
 @router.post("/", status_code=status.HTTP_201_CREATED)
 async def create_role(
     schema: RoleCreateSchema,
     command: Annotated[RoleCommand, Depends(role_command)],
 ) -> RoleResponse:
     role = await command.create(dto=schema)
+    if isinstance(role, RoleAlreadyExistsError):
+        raise role_exist
+
     return RoleResponse(
         id=role.id,
         name=role.name,

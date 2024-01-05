@@ -1,5 +1,5 @@
 import contextlib
-from collections.abc import AsyncIterator
+from collections.abc import AsyncGenerator, AsyncIterator
 
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession
 
@@ -19,8 +19,7 @@ async def get_context_session() -> AsyncIterator[AsyncSession]:
         await session.close()
 
 
-async def get_session() -> AsyncSession:
+async def get_session() -> AsyncGenerator[AsyncSession, None]:
     async with async_session_factory.begin() as session:
         yield session
         await session.close()
-
