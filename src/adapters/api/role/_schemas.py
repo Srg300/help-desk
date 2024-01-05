@@ -1,4 +1,5 @@
-from adapters.api import BaseSchema
+from pydantic import BaseModel
+
 from core.domain.role.dto import RoleCreateDto, RoleUpdateDto
 
 
@@ -10,7 +11,7 @@ class RoleUpdateSchema(RoleUpdateDto):
     ...
 
 
-class RoleResponse(BaseSchema):
+class RoleResponse(BaseModel):
     id: int
     name: str
     weight: int

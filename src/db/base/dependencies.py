@@ -13,6 +13,14 @@ async def get_engine() -> AsyncIterator[AsyncEngine]:
 
 
 @contextlib.asynccontextmanager
-async def get_session() -> AsyncIterator[AsyncSession]:
+async def get_context_session() -> AsyncIterator[AsyncSession]:
     async with async_session_factory.begin() as session:
         yield session
+        await session.close()
+
+
+async def get_session() -> AsyncSession:
+    async with async_session_factory.begin() as session:
+        yield session
+        await session.close()
+

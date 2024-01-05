@@ -2,8 +2,8 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, status
 
-from core.domain.role.command import RoleCommand
-from core.domain.role.service import RoleService
+from core.domain.role.command import RoleCommand, role_command
+from core.domain.role.service import RoleService, role_service
 
 from ._exception import role_not_found
 from ._schemas import RoleCreateSchema, RoleResponse, RoleUpdateSchema
@@ -13,15 +13,10 @@ router = APIRouter(
     prefix="/roles",
 )
 
-
-command = Annotated[RoleCommand, Depends(RoleCommand)]
-service = Annotated[RoleService, Depends(RoleService)]
-
-
 @router.post("/", status_code=status.HTTP_201_CREATED)
 async def create_role(
     schema: RoleCreateSchema,
-    command: command,
+    command: Annotated[RoleCommand, Depends(role_command)],
 ) -> RoleResponse:
     role = await command.create(dto=schema)
     return RoleResponse(
@@ -32,7 +27,10 @@ async def create_role(
 
 
 @router.get("/{role_id}", status_code=status.HTTP_200_OK)
-async def get_by_id(role_id: int, service: service) -> RoleResponse:
+async def get_by_id(
+    role_id: int,
+    service: Annotated[RoleService, Depends(role_service)],
+) -> RoleResponse:
     role = await service.get_by_id(id_=role_id)
     if role is None:
         raise role_not_found
@@ -47,7 +45,7 @@ async def get_by_id(role_id: int, service: service) -> RoleResponse:
 async def update(
     role_id: int,
     schema: RoleUpdateSchema,
-    command: command,
+    command: Annotated[RoleCommand, Depends(role_command)],
 ) -> RoleResponse:
     role = await command.update(
         id_=role_id,
@@ -65,7 +63,7 @@ async def update(
 @router.delete("/{role_id}", status_code=status.HTTP_200_OK)
 async def delete_by_id(
     role_id: int,
-    command: command,
+    command: Annotated[RoleCommand, Depends(role_command)],
 ) -> dict[str, str]:
     role = await command.delete(id_=role_id)
     if role is None:

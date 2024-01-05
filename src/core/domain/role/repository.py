@@ -29,8 +29,7 @@ class RoleRepository:
         if name:
             stmt = select(Role).where(Role.name == name)
 
-        async with self._session as session:
-            return (await session.execute(stmt)).scalar_one_or_none()
+        return (await self._session.execute(stmt)).scalar_one_or_none()
 
     async def update(
         self,
@@ -43,9 +42,7 @@ class RoleRepository:
             .where(Role.id == id_)
             .returning(Role)
         )
-
-        async with self._session as session:
-            return (await session.execute(stmt)).scalar_one()
+        return (await self._session.execute(stmt)).scalar_one()
 
     def update_stmt(
         self,

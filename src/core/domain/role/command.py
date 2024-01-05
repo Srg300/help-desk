@@ -1,3 +1,6 @@
+from fastapi import Depends
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from db.base.dependencies import get_session
 from db.models import Role
 
@@ -6,8 +9,8 @@ from .repository import RoleRepository
 
 
 class RoleCommand:
-    def __init__(self) -> None:
-        self._session = get_session()
+    def __init__(self, session: AsyncSession) -> None:
+        self._session = session
         self._repository = RoleRepository(session=self._session)
 
     async def create(
@@ -17,10 +20,9 @@ class RoleCommand:
         role = await self._repository.create(
             dto=dto,
         )
-        async with self._session as session:
-            session.add(role)
-            await session.commit()
-            return role
+        self._session.add(role)
+        await self._session.commit()
+        return role
 
     async def update(
         self,
@@ -32,18 +34,19 @@ class RoleCommand:
             dto=dto,
         )
 
-        async with self._session as session:
-            return (await session.execute(stmt)).scalar_one()
+        return (await self._session.execute(stmt)).scalar_one()
 
     async def delete(
         self,
         id_: int,
     ) -> int | None:
-        async with self._session as session:
-            role = await session.get(ident=id_, entity=Role)
-            if role is None:
-                return None
+        role = await self._repository.get(id_=id_)
+        if role is None:
+            return None
+        await self._session.delete(role)
+        await self._session.commit()
+        return id_
 
-            await session.delete(role)
-            await session.commit()
-            return id_
+
+async def role_command(session: AsyncSession = Depends(get_session)) -> RoleCommand:
+    return RoleCommand(session=session)
