@@ -1,5 +1,7 @@
+from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from db.base.dependencies import get_session
 from db.models import Role
 
 from .dto import RoleCreateDto, RoleUpdateDto
@@ -8,7 +10,7 @@ from .repository import RoleRepository
 
 
 class RoleCommand:
-    def __init__(self, session: AsyncSession) -> None:
+    def __init__(self, session: AsyncSession = Depends(get_session)) -> None:
         self._session = session
         self._repository = RoleRepository(session=self._session)
 

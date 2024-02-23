@@ -139,6 +139,7 @@ ignore = [
     "EXE002",
     "TD003",
     "FIX002",
+    "B008",
 ]
 
 [tool.ruff.per-file-ignores]
