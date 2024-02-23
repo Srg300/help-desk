@@ -11,6 +11,7 @@ class User(Base):
     id: Mapped[int64_pk]
     username: Mapped[str_256] = mapped_column(unique=True)
     full_name: Mapped[str_256]
+    weight: Mapped[int] = mapped_column()
 
     email: Mapped[str_256] = mapped_column(unique=True)
     phone: Mapped[str_256 | None] = mapped_column(unique=True)

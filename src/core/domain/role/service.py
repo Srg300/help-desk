@@ -1,6 +1,4 @@
-from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
-
 
 from db.models import Role
 
