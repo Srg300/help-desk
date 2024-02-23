@@ -159,6 +159,7 @@ staticmethod-decorators = ["staticmethod"]
 [tool.pdm.scripts]
 app = "python -m main"
 
+
 lint = { composite = [
     "ruff check . --fix --show-fixes",
     "black .",
