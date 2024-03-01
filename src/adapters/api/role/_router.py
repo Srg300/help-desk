@@ -1,3 +1,5 @@
+from typing import Annotated
+
 from fastapi import APIRouter, Depends, status
 
 from core.domain.role.command import RoleCommand
@@ -16,7 +18,7 @@ router = APIRouter(
 @router.post("/", status_code=status.HTTP_201_CREATED)
 async def create_role(
     schema: RoleCreateSchema,
-    command: RoleCommand = Depends(RoleCommand),
+    command: Annotated[RoleCommand, Depends(RoleCommand)],
 ) -> RoleResponse:
     role = await command.create(dto=schema)
     if isinstance(role, RoleAlreadyExistsError):
@@ -32,7 +34,7 @@ async def create_role(
 @router.get("/{role_id}", status_code=status.HTTP_200_OK)
 async def get_by_id(
     role_id: int,
-    service: RoleService = Depends(RoleService),
+    service: Annotated[RoleService, Depends(RoleService)],
 ) -> RoleResponse:
     role = await service.get_by_id(id_=role_id)
     if role is None:
@@ -48,7 +50,7 @@ async def get_by_id(
 async def update(
     role_id: int,
     schema: RoleUpdateSchema,
-    command: RoleCommand = Depends(RoleCommand),
+    command: Annotated[RoleCommand, Depends(RoleCommand)],
 ) -> RoleResponse:
     command = RoleCommand()
     role = await command.update(
@@ -67,7 +69,7 @@ async def update(
 @router.delete("/{role_id}", status_code=status.HTTP_200_OK)
 async def delete_by_id(
     role_id: int,
-    command: RoleCommand = Depends(RoleCommand),
+    command: Annotated[RoleCommand, Depends(RoleCommand)],
 ) -> dict[str, str]:
     role = await command.delete(id_=role_id)
     if role is None:
