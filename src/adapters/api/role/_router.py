@@ -52,7 +52,6 @@ async def update(
     schema: RoleUpdateSchema,
     command: Annotated[RoleCommand, Depends(RoleCommand)],
 ) -> RoleResponse:
-    command = RoleCommand()
     role = await command.update(
         id_=role_id,
         dto=schema,
