@@ -19,6 +19,6 @@ async def get_context_session() -> AsyncIterator[AsyncSession]:
 
 
 async def get_session() -> AsyncGenerator[AsyncSession, None]:
-    async with async_session_factory.begin() as session:
+    async with async_session_factory() as session:
         yield session
         await session.close()

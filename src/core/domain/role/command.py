@@ -33,6 +33,7 @@ class RoleCommandCreate:
         )
         self._session.add(role)
         await self._session.commit()
+        await self._session.flush()
         return role
 
 
@@ -68,4 +69,5 @@ class RoleCommandDelete:
             return None
         await self._session.delete(role)
         await self._session.commit()
+        await self._session.flush()
         return id_

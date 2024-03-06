@@ -24,7 +24,6 @@ async def create_role(
     schema: RoleCreateSchema,
     command: Annotated[RoleCommandCreate, Depends(RoleCommandCreate)],
 ) -> RoleResponse:
-
     role = await command.execute(dto=schema)
     if isinstance(role, RoleAlreadyExistsError):
         raise role_exist
