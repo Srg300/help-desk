@@ -11,12 +11,12 @@ from .exception import RoleAlreadyExistsError
 from .repository import RoleRepository
 
 
-class RoleCommand:
+class RoleCommandCreate:
     def __init__(self, session: Annotated[AsyncSession, Depends(get_session)]) -> None:
         self._session = session
         self._repository = RoleRepository(session=self._session)
 
-    async def create(
+    async def execute(
         self,
         dto: RoleCreateDto,
     ) -> Role | RoleAlreadyExistsError:
@@ -35,7 +35,13 @@ class RoleCommand:
         await self._session.commit()
         return role
 
-    async def update(
+
+class RoleCommandUpdate:
+    def __init__(self, session: Annotated[AsyncSession, Depends(get_session)]) -> None:
+        self._session = session
+        self._repository = RoleRepository(session=self._session)
+
+    async def execute(
         self,
         id_: int,
         dto: RoleUpdateDto,
@@ -47,7 +53,13 @@ class RoleCommand:
 
         return (await self._session.execute(stmt)).scalar_one()
 
-    async def delete(
+
+class RoleCommandDelete:
+    def __init__(self, session: Annotated[AsyncSession, Depends(get_session)]) -> None:
+        self._session = session
+        self._repository = RoleRepository(session=self._session)
+
+    async def execute(
         self,
         id_: int,
     ) -> int | None:

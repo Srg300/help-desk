@@ -2,7 +2,11 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, status
 
-from core.domain.role.command import RoleCommand
+from core.domain.role.command import (
+    RoleCommandCreate,
+    RoleCommandUpdate,
+    RoleCommandDelete,
+)
 from core.domain.role.exception import RoleAlreadyExistsError
 from core.domain.role.service import RoleService
 
@@ -18,9 +22,10 @@ router = APIRouter(
 @router.post("/", status_code=status.HTTP_201_CREATED)
 async def create_role(
     schema: RoleCreateSchema,
-    command: Annotated[RoleCommand, Depends(RoleCommand)],
+    command: Annotated[RoleCommandCreate, Depends(RoleCommandCreate)],
 ) -> RoleResponse:
-    role = await command.create(dto=schema)
+
+    role = await command.execute(dto=schema)
     if isinstance(role, RoleAlreadyExistsError):
         raise role_exist
 
@@ -50,14 +55,15 @@ async def get_by_id(
 async def update(
     role_id: int,
     schema: RoleUpdateSchema,
-    command: Annotated[RoleCommand, Depends(RoleCommand)],
+    command: Annotated[RoleCommandUpdate, Depends(RoleCommandUpdate)],
 ) -> RoleResponse:
-    role = await command.update(
+    role = await command.execute(
         id_=role_id,
         dto=schema,
     )
     if role is None:
         raise role_not_found
+
     return RoleResponse(
         id=role.id,
         name=role.name,
@@ -68,9 +74,9 @@ async def update(
 @router.delete("/{role_id}", status_code=status.HTTP_200_OK)
 async def delete_by_id(
     role_id: int,
-    command: Annotated[RoleCommand, Depends(RoleCommand)],
+    command: Annotated[RoleCommandDelete, Depends(RoleCommandDelete)],
 ) -> dict[str, str]:
-    role = await command.delete(id_=role_id)
+    role = await command.execute(id_=role_id)
     if role is None:
         raise role_not_found
     return {"message": f"role by id {role_id} is deleted"}
