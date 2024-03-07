@@ -4,8 +4,8 @@ from fastapi import APIRouter, Depends, status
 
 from core.domain.role.command import (
     RoleCommandCreate,
-    RoleCommandUpdate,
     RoleCommandDelete,
+    RoleCommandUpdate,
 )
 from core.domain.role.exception import RoleAlreadyExistsError
 from core.domain.role.service import RoleService
