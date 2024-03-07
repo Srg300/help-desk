@@ -10,15 +10,18 @@ class User(Base):
 
     id: Mapped[int64_pk]
     username: Mapped[str_256] = mapped_column(unique=True)
-    full_name: Mapped[str_256]
-    weight: Mapped[int] = mapped_column()
-
+    hashed_password: Mapped[str]
     email: Mapped[str_256] = mapped_column(unique=True)
+    full_name: Mapped[str_256 | None]
+    weight: Mapped[int | None] = mapped_column()
+
     phone: Mapped[str_256 | None] = mapped_column(unique=True)
     telegram_id: Mapped[str_256 | None] = mapped_column(unique=True)
 
-    is_active: Mapped[bool] = mapped_column(default=True)
-    is_superuser: Mapped[bool] = mapped_column(default=True)
+    is_active: Mapped[bool] = mapped_column(default=False)
+    is_superuser: Mapped[bool] = mapped_column(default=False)
+    is_verified: Mapped[bool] = mapped_column(default=False)
+
     created_at: Mapped[created_datetime]
     updated_at: Mapped[updated_datetime]
 

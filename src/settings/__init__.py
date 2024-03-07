@@ -1,4 +1,4 @@
-from .app import AppSettings
+from .app import AppSettings, AuthSettings
 from .database import DatabaseSettings
 from .keycloak import KeycloakSettings
 from .resolver import get_settings
@@ -8,4 +8,5 @@ __all__ = [
     "AppSettings",
     "DatabaseSettings",
     "KeycloakSettings",
+    "AuthSettings",
 ]
