@@ -1,9 +1,14 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from db.base import Base, int64, int64_pk, str_256
+from db.base import Base, int64, str_256
+
+if TYPE_CHECKING:
+    from db.models import User
 
 
 class Group(Base):
@@ -12,11 +17,5 @@ class Group(Base):
     __tablename__ = "group"
 
     name: Mapped[str_256] = mapped_column(unique=True)
-    weight: Mapped[int64] = mapped_column()
 
-    leader_id: Mapped[int | None] = mapped_column(ForeignKey("user.id"))
-
-    leader: Mapped[Group | None] = relationship(
-        back_populates="group",
-    )
-
+    leader_id: Mapped[int64 | None] = mapped_column(ForeignKey("user.id"))

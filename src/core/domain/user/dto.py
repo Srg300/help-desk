@@ -9,8 +9,8 @@ class UserCreateDto(BaseDto):
     password: str
     username: str
 
-    @property
     @computed_field
+    @property
     def hashed_password(self) -> str:
         return get_password_hash(password=self.password)  # type: ignore[no-any-return]
 

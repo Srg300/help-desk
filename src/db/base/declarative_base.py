@@ -3,7 +3,8 @@ from datetime import datetime
 
 from sqlalchemy import DateTime, Enum, MetaData
 from sqlalchemy.orm import DeclarativeBase, Mapped, registry
-from base.types import created_datetime, updated_datetime, int64_pk
+
+from db.base.types import created_datetime, int64_pk, updated_datetime
 
 meta = MetaData(
     naming_convention={

@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from db.base import Base, int64, int64_pk, str_256
+from db.base import Base, int64, str_256
 
 if TYPE_CHECKING:
     from ._user import User
@@ -26,4 +26,3 @@ class Division(Base):
         remote_side="Division.id",
     )
     children: Mapped[list[Division]] = relationship(back_populates="parent")
-    user: Mapped[list[User]] = relationship(back_populates="division")
