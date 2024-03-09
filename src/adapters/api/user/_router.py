@@ -22,7 +22,7 @@ async def create_user(
     schema: UserCreateSchema,
     command: Annotated[UserCreateCommand, Depends(UserCreateCommand)],
 ) -> UserResponse:
-    user = await command.execute(dto=schema)
+    user = await command.execute(dto=schema.to_dto())
 
     if isinstance(user, ModelAlreadyExistsError):
         raise user_exist

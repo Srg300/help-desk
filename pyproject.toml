@@ -24,6 +24,7 @@ dependencies = [
     "python-jose[cryptography]>=3.3.0",
     "passlib>=1.7.4",
     "types-passlib>=1.7.7.20240106",
+    "bcrypt>=4.1.2",
 ]
 requires-python = ">=3.11"
 readme = "README.md"

@@ -1,7 +1,6 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from core.security import get_password_hash
 from db.models import User
 
 from .dto import UserCreateDto
@@ -16,8 +15,8 @@ class UserRepository:
         dto: UserCreateDto,
     ) -> User:
         return User(
-            username=dto.email.split("@")[0],
-            hashed_password=get_password_hash(dto.password),
+            username=dto.username,
+            hashed_password=dto.hashed_password,
             email=dto.email,
         )
 
