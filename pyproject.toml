@@ -9,13 +9,13 @@ authors = [
 dependencies = [
     "fastapi>=0.104.0",
     "pydantic>=2.4.2",
-    "sqlalchemy>=2.0.22",
+    "SQLAlchemy>=2.0.28",
     "python-dotenv>=1.0.0",
     "uvicorn>=0.23.2",
     "pyjwt>=2.8.0",
     "cryptography>=41.0.4",
     "redis>=5.0.1",
-    "alembic>=1.12.0",
+    "alembic>=1.13.1",
     "asyncpg>=0.29.0",
     "pydantic-settings>=2.0.3",
     "uvloop>=0.18.0; sys_platform != 'win32'",
@@ -25,6 +25,8 @@ dependencies = [
     "passlib>=1.7.4",
     "types-passlib>=1.7.7.20240106",
     "bcrypt>=4.1.2",
+    "black>=24.2.0",
+    "isort>=5.13.2",
 ]
 requires-python = ">=3.11"
 readme = "README.md"

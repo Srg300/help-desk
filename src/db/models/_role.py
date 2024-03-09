@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from sqlalchemy.orm import Mapped, mapped_column
 
-from db.base import Base, int64_pk, str_256
+from db.base import Base, str_256
 
 
 class Role(Base):
@@ -10,6 +10,5 @@ class Role(Base):
 
     __tablename__ = "role"
 
-    id: Mapped[int64_pk]
     name: Mapped[str_256] = mapped_column(unique=True)
     weight: Mapped[int] = mapped_column()

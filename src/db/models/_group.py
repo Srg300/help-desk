@@ -1,9 +1,30 @@
 from __future__ import annotations
 
-from sqlalchemy import ForeignKey
+from typing import TYPE_CHECKING
+
+from sqlalchemy import Column, ForeignKey, Table
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from db.base import Base, int64, int64_pk, str_256
+from db.base import Base, int64, str_256
+
+if TYPE_CHECKING:
+    from db.models import Ticket, User
+
+
+user_group = Table(
+    "user_group",
+    Base.metadata,
+    Column(
+        "group_id",
+        ForeignKey("group.id", ondelete="CASCADE"),
+        primary_key=True,
+    ),
+    Column(
+        "user_id",
+        ForeignKey("user.id", ondelete="CASCADE"),
+        primary_key=True,
+    ),
+)
 
 
 class Group(Base):
@@ -11,14 +32,13 @@ class Group(Base):
 
     __tablename__ = "group"
 
-    id: Mapped[int64_pk]
     name: Mapped[str_256] = mapped_column(unique=True)
-    weight: Mapped[int64] = mapped_column()
 
-    parent_id: Mapped[int | None] = mapped_column(ForeignKey("group.id"))
+    leader_id: Mapped[int64 | None] = mapped_column(ForeignKey("user.id"))
 
-    parent: Mapped[Group | None] = relationship(
-        back_populates="children",
-        remote_side="Group.id",
+    leader: Mapped[User] = relationship(
+        back_populates="group",
+        foreign_keys=[leader_id],
     )
-    children: Mapped[list[Group]] = relationship(back_populates="parent")
+    tickets: Mapped[list[Ticket]] = relationship(back_populates="group")
+    users: Mapped[list[User]] = relationship(secondary=user_group)

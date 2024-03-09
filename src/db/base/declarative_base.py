@@ -2,7 +2,9 @@ import enum
 from datetime import datetime
 
 from sqlalchemy import DateTime, Enum, MetaData
-from sqlalchemy.orm import DeclarativeBase, registry
+from sqlalchemy.orm import DeclarativeBase, Mapped, registry
+
+from db.base.types import created_datetime, int64_pk, updated_datetime
 
 meta = MetaData(
     naming_convention={
@@ -23,6 +25,9 @@ class Base(DeclarativeBase):
             datetime: DateTime(timezone=True),
         },
     )
+    id: Mapped[int64_pk]
+    created_at: Mapped[created_datetime]
+    updated_at: Mapped[updated_datetime]
 
     def __repr__(self) -> str:
         columns = ", ".join(

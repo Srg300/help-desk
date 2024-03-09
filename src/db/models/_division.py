@@ -1,14 +1,9 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from db.base import Base, int64, int64_pk, str_256
-
-if TYPE_CHECKING:
-    from ._user import User
+from db.base import Base, int64, str_256
 
 
 class Division(Base):
@@ -16,7 +11,6 @@ class Division(Base):
 
     __tablename__ = "division"
 
-    id: Mapped[int64_pk]
     name: Mapped[str_256] = mapped_column(unique=True)
     weight: Mapped[int64] = mapped_column()
 
@@ -27,4 +21,3 @@ class Division(Base):
         remote_side="Division.id",
     )
     children: Mapped[list[Division]] = relationship(back_populates="parent")
-    user: Mapped[list[User]] = relationship(back_populates="division")
