@@ -28,7 +28,6 @@ class Ticket(Base):
     parent_id: Mapped[int64 | None] = mapped_column(ForeignKey("ticket.id"))
     group_id: Mapped[int64 | None] = mapped_column(ForeignKey("group.id"))
 
-    group: Mapped[Group] = relationship(back_populates="ticket")
     parent: Mapped[Ticket | None] = relationship(
         back_populates="children",
         remote_side="Ticket.id",
@@ -43,4 +42,7 @@ class Ticket(Base):
         back_populates="worker_tickets",
         primaryjoin="foreign(Ticket.worker_id)==User.id"
     )
+
+    
+    # group: Mapped[Group] = relationship(back_populates="ticket")
     # messages: Mapped[list[Message]] = relationship(back_populates="ticket")
