@@ -16,7 +16,6 @@ class Division(Base):
 
     __tablename__ = "division"
 
-    id: Mapped[int64_pk]
     name: Mapped[str_256] = mapped_column(unique=True)
     weight: Mapped[int64] = mapped_column()
 

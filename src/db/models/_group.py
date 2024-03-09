@@ -11,14 +11,12 @@ class Group(Base):
 
     __tablename__ = "group"
 
-    id: Mapped[int64_pk]
     name: Mapped[str_256] = mapped_column(unique=True)
     weight: Mapped[int64] = mapped_column()
 
-    parent_id: Mapped[int | None] = mapped_column(ForeignKey("group.id"))
+    leader_id: Mapped[int | None] = mapped_column(ForeignKey("user.id"))
 
-    parent: Mapped[Group | None] = relationship(
-        back_populates="children",
-        remote_side="Group.id",
+    leader: Mapped[Group | None] = relationship(
+        back_populates="group",
     )
-    children: Mapped[list[Group]] = relationship(back_populates="parent")
+

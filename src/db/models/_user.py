@@ -8,7 +8,6 @@ from db.models import Division
 class User(Base):
     __tablename__ = "user"
 
-    id: Mapped[int64_pk]
     username: Mapped[str_256] = mapped_column(unique=True)
     hashed_password: Mapped[str]
     email: Mapped[str_256] = mapped_column(unique=True)
@@ -28,5 +27,3 @@ class User(Base):
     division_id: Mapped[int | None] = mapped_column(ForeignKey("division.id"))
     group_id: Mapped[int | None] = mapped_column(ForeignKey("group.id"))
     role_id: Mapped[int | None] = mapped_column(ForeignKey("role.id"))
-
-    division: Mapped[Division | None] = relationship(back_populates="user")

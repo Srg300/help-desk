@@ -10,6 +10,5 @@ class Role(Base):
 
     __tablename__ = "role"
 
-    id: Mapped[int64_pk]
     name: Mapped[str_256] = mapped_column(unique=True)
     weight: Mapped[int] = mapped_column()
