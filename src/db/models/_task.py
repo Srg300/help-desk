@@ -24,12 +24,12 @@ class Task(Base):
     )
 
     author_id: Mapped[int64] = mapped_column(ForeignKey("user.id"))
+    worker_id: Mapped[int64] = mapped_column(ForeignKey("user.id"))
+    
     author: Mapped[User] = relationship(
         back_populates="author_tasks",
         primaryjoin="foreign(Task.author_id)==User.id"
     )
-
-    worker_id: Mapped[int64] = mapped_column(ForeignKey("user.id"))
     worker: Mapped[User] = relationship(
         back_populates="worker_tasks",
         primaryjoin="foreign(Task.worker_id)==User.id"

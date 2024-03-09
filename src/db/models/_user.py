@@ -4,8 +4,11 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from db.base import Base, created_datetime, int64, str_256, updated_datetime
 from db.models._task import Task
+from db.models._ticket import Ticket
+
 if TYPE_CHECKING:
-    from db.models import Task, Message, Ticket
+    from db.models import Message
+
 
 class User(Base):
     __tablename__ = "user"
@@ -26,8 +29,8 @@ class User(Base):
     created_at: Mapped[created_datetime]
     updated_at: Mapped[updated_datetime]
 
-    messages: Mapped[list["Message"]] = relationship(back_populates="author")
 
+    messages: Mapped[list["Message"]] = relationship(back_populates="author")
     author_tasks: Mapped[list[Task]] = relationship(
         back_populates="author",
         cascade="all, delete-orphan",
@@ -38,4 +41,14 @@ class User(Base):
         cascade="all, delete-orphan",
         primaryjoin=lambda: (Task.worker_id == User.id)
     )
-    # tickets: Mapped[list["Ticket"]] = relationship(back_populates="user_tickets")
+    author_tickets: Mapped[list[Ticket]] = relationship(
+        back_populates="author",
+        cascade="all, delete-orphan",
+        primaryjoin=lambda: (Ticket.author_id == User.id)
+    )
+    worker_tickets: Mapped[list[Ticket]] = relationship(
+        back_populates="worker",
+        cascade="all, delete-orphan",
+        primaryjoin=lambda: (Ticket.worker_id == User.id)
+    )
+

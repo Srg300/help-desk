@@ -24,18 +24,23 @@ class Ticket(Base):
         Enum(TicketStatus, native_enum=False, length=20),
     )
     author_id: Mapped[int64] = mapped_column(ForeignKey("user.id"))
-    # author: Mapped[User] = relationship()
-
-    group_id: Mapped[int64 | None] = mapped_column(ForeignKey("group.id"))
-    # group: Mapped[Group] = relationship(back_populates="ticket")
-
     worker_id: Mapped[int64] = mapped_column(ForeignKey("user.id"))
-    # worker: Mapped[User] = relationship()
-
     parent_id: Mapped[int64 | None] = mapped_column(ForeignKey("ticket.id"))
+    group_id: Mapped[int64 | None] = mapped_column(ForeignKey("group.id"))
+
+    group: Mapped[Group] = relationship(back_populates="ticket")
     parent: Mapped[Ticket | None] = relationship(
         back_populates="children",
         remote_side="Ticket.id",
     )
     children: Mapped[list[Ticket]] = relationship(back_populates="parent")
+    
+    author: Mapped[User] = relationship(
+        back_populates="author_tickets",
+        primaryjoin="foreign(Ticket.author_id)==User.id"
+    )
+    worker: Mapped[User] = relationship(
+        back_populates="worker_tickets",
+        primaryjoin="foreign(Ticket.worker_id)==User.id"
+    )
     # messages: Mapped[list[Message]] = relationship(back_populates="ticket")
