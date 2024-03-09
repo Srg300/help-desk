@@ -27,9 +27,6 @@ class User(Base):
     is_superuser: Mapped[bool] = mapped_column(default=False)
     is_verified: Mapped[bool] = mapped_column(default=False)
 
-    created_at: Mapped[created_datetime]
-    updated_at: Mapped[updated_datetime]
-
     group_leader: Mapped[list[Group]] = relationship(back_populates="leader")
     messages: Mapped[list["Message"]] = relationship(back_populates="author")
     author_tasks: Mapped[list[Task]] = relationship(
