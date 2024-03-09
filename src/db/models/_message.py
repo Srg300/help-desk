@@ -26,9 +26,9 @@ class Message(Base):
 
     ticket: Mapped[Ticket | None] = relationship(
         back_populates="messages",
-        foreign_keys=[ticket_id]
+        foreign_keys=[ticket_id],
     )
     task: Mapped[Task | None] = relationship(
         back_populates="messages",
-        foreign_keys=[task_id]
+        foreign_keys=[task_id],
     )

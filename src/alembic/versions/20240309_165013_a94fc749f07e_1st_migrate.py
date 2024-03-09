@@ -1,12 +1,12 @@
 """1st migrate
 
 Revision ID: a94fc749f07e
-Revises: 
+Revises:
 Create Date: 2024-03-09 16:50:13.440050
 
 """
 
-from typing import Sequence, Union
+from collections.abc import Sequence
 
 import sqlalchemy as sa
 
@@ -43,7 +43,9 @@ def upgrade() -> None:
         sa.Column("created_at", sa.DateTime(timezone=True), nullable=False),
         sa.Column("updated_at", sa.DateTime(timezone=True), nullable=False),
         sa.ForeignKeyConstraint(
-            ["parent_id"], ["division.id"], name=op.f("fk_division_parent_id_division")
+            ["parent_id"],
+            ["division.id"],
+            name=op.f("fk_division_parent_id_division"),
         ),
         sa.PrimaryKeyConstraint("id", name=op.f("pk_division")),
         sa.UniqueConstraint("name", name=op.f("uq_division_name")),
@@ -126,7 +128,9 @@ def upgrade() -> None:
         sa.Column("created_at", sa.DateTime(timezone=True), nullable=False),
         sa.Column("updated_at", sa.DateTime(timezone=True), nullable=False),
         sa.ForeignKeyConstraint(
-            ["leader_id"], ["user.id"], name=op.f("fk_group_leader_id_user")
+            ["leader_id"],
+            ["user.id"],
+            name=op.f("fk_group_leader_id_user"),
         ),
         sa.PrimaryKeyConstraint("id", name=op.f("pk_group")),
         sa.UniqueConstraint("name", name=op.f("uq_group_name")),
@@ -167,10 +171,14 @@ def upgrade() -> None:
         sa.Column("created_at", sa.DateTime(timezone=True), nullable=False),
         sa.Column("updated_at", sa.DateTime(timezone=True), nullable=False),
         sa.ForeignKeyConstraint(
-            ["author_id"], ["user.id"], name=op.f("fk_task_author_id_user")
+            ["author_id"],
+            ["user.id"],
+            name=op.f("fk_task_author_id_user"),
         ),
         sa.ForeignKeyConstraint(
-            ["worker_id"], ["user.id"], name=op.f("fk_task_worker_id_user")
+            ["worker_id"],
+            ["user.id"],
+            name=op.f("fk_task_worker_id_user"),
         ),
         sa.PrimaryKeyConstraint("id", name=op.f("pk_task")),
         sa.UniqueConstraint("name", name=op.f("uq_task_name")),
@@ -212,16 +220,24 @@ def upgrade() -> None:
         sa.Column("created_at", sa.DateTime(timezone=True), nullable=False),
         sa.Column("updated_at", sa.DateTime(timezone=True), nullable=False),
         sa.ForeignKeyConstraint(
-            ["author_id"], ["user.id"], name=op.f("fk_ticket_author_id_user")
+            ["author_id"],
+            ["user.id"],
+            name=op.f("fk_ticket_author_id_user"),
         ),
         sa.ForeignKeyConstraint(
-            ["group_id"], ["group.id"], name=op.f("fk_ticket_group_id_group")
+            ["group_id"],
+            ["group.id"],
+            name=op.f("fk_ticket_group_id_group"),
         ),
         sa.ForeignKeyConstraint(
-            ["parent_id"], ["ticket.id"], name=op.f("fk_ticket_parent_id_ticket")
+            ["parent_id"],
+            ["ticket.id"],
+            name=op.f("fk_ticket_parent_id_ticket"),
         ),
         sa.ForeignKeyConstraint(
-            ["worker_id"], ["user.id"], name=op.f("fk_ticket_worker_id_user")
+            ["worker_id"],
+            ["user.id"],
+            name=op.f("fk_ticket_worker_id_user"),
         ),
         sa.PrimaryKeyConstraint("id", name=op.f("pk_ticket")),
         sa.UniqueConstraint("name", name=op.f("uq_ticket_name")),
@@ -249,13 +265,19 @@ def upgrade() -> None:
         sa.Column("created_at", sa.DateTime(timezone=True), nullable=False),
         sa.Column("updated_at", sa.DateTime(timezone=True), nullable=False),
         sa.ForeignKeyConstraint(
-            ["author_id"], ["user.id"], name=op.f("fk_message_author_id_user")
+            ["author_id"],
+            ["user.id"],
+            name=op.f("fk_message_author_id_user"),
         ),
         sa.ForeignKeyConstraint(
-            ["task_id"], ["ticket.id"], name=op.f("fk_message_task_id_ticket")
+            ["task_id"],
+            ["ticket.id"],
+            name=op.f("fk_message_task_id_ticket"),
         ),
         sa.ForeignKeyConstraint(
-            ["ticket_id"], ["ticket.id"], name=op.f("fk_message_ticket_id_ticket")
+            ["ticket_id"],
+            ["ticket.id"],
+            name=op.f("fk_message_ticket_id_ticket"),
         ),
         sa.PrimaryKeyConstraint("id", name=op.f("pk_message")),
     )

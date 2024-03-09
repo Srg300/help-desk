@@ -10,7 +10,7 @@ from db.constants.ticket import TicketStatus
 from db.models import Group
 
 if TYPE_CHECKING:
-    from db.models import User, Message
+    from db.models import Message, User
 
 
 class Ticket(Base):
@@ -33,14 +33,14 @@ class Ticket(Base):
         remote_side="Ticket.id",
     )
     children: Mapped[list[Ticket]] = relationship(back_populates="parent")
-    
+
     author: Mapped[User] = relationship(
         back_populates="author_tickets",
-        primaryjoin="foreign(Ticket.author_id)==User.id"
+        primaryjoin="foreign(Ticket.author_id)==User.id",
     )
     worker: Mapped[User] = relationship(
         back_populates="worker_tickets",
-        primaryjoin="foreign(Ticket.worker_id)==User.id"
+        primaryjoin="foreign(Ticket.worker_id)==User.id",
     )
 
     group: Mapped[Group] = relationship(

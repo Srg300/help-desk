@@ -1,11 +1,11 @@
-from sqlalchemy import ForeignKey
 from typing import TYPE_CHECKING
+
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from db.base import Base, created_datetime, int64, str_256, updated_datetime
-from db.models._task import Task
-from db.models._ticket import Ticket, Group
+from db.base import Base, created_datetime, str_256, updated_datetime
 from db.models._group import user_group
+from db.models._task import Task
+from db.models._ticket import Group, Ticket
 
 if TYPE_CHECKING:
     from db.models import Message
@@ -30,27 +30,27 @@ class User(Base):
     created_at: Mapped[created_datetime]
     updated_at: Mapped[updated_datetime]
 
-    group: Mapped[list[Group]] = relationship(back_populates="leader")
+    group_leader: Mapped[list[Group]] = relationship(back_populates="leader")
     messages: Mapped[list["Message"]] = relationship(back_populates="author")
     author_tasks: Mapped[list[Task]] = relationship(
         back_populates="author",
         cascade="all, delete-orphan",
-        primaryjoin=lambda: (Task.author_id == User.id)
+        primaryjoin=lambda: (Task.author_id == User.id),
     )
     worker_tasks: Mapped[list[Task]] = relationship(
         back_populates="worker",
         cascade="all, delete-orphan",
-        primaryjoin=lambda: (Task.worker_id == User.id)
+        primaryjoin=lambda: (Task.worker_id == User.id),
     )
     author_tickets: Mapped[list[Ticket]] = relationship(
         back_populates="author",
         cascade="all, delete-orphan",
-        primaryjoin=lambda: (Ticket.author_id == User.id)
+        primaryjoin=lambda: (Ticket.author_id == User.id),
     )
     worker_tickets: Mapped[list[Ticket]] = relationship(
         back_populates="worker",
         cascade="all, delete-orphan",
-        primaryjoin=lambda: (Ticket.worker_id == User.id)
+        primaryjoin=lambda: (Ticket.worker_id == User.id),
     )
     group: Mapped[list[Group]] = relationship(
         secondary=user_group,

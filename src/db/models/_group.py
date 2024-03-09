@@ -2,13 +2,13 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from sqlalchemy import ForeignKey, Column, Table
+from sqlalchemy import Column, ForeignKey, Table
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from db.base import Base, int64, str_256
 
 if TYPE_CHECKING:
-    from db.models import User, Ticket
+    from db.models import Ticket, User
 
 
 user_group = Table(
@@ -38,7 +38,7 @@ class Group(Base):
 
     leader: Mapped[User] = relationship(
         back_populates="group",
-        foreign_keys=[leader_id]
+        foreign_keys=[leader_id],
     )
     tickets: Mapped[list[Ticket]] = relationship(back_populates="group")
     users: Mapped[list[User]] = relationship(secondary=user_group)
