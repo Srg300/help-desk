@@ -4,7 +4,8 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from db.base import Base, created_datetime, int64, str_256, updated_datetime
 from db.models._task import Task
-from db.models._ticket import Ticket
+from db.models._ticket import Ticket, Group
+from db.models._group import user_group
 
 if TYPE_CHECKING:
     from db.models import Message
@@ -29,7 +30,7 @@ class User(Base):
     created_at: Mapped[created_datetime]
     updated_at: Mapped[updated_datetime]
 
-
+    group: Mapped[list[Group]] = relationship(back_populates="leader")
     messages: Mapped[list["Message"]] = relationship(back_populates="author")
     author_tasks: Mapped[list[Task]] = relationship(
         back_populates="author",
@@ -51,4 +52,7 @@ class User(Base):
         cascade="all, delete-orphan",
         primaryjoin=lambda: (Ticket.worker_id == User.id)
     )
-
+    group: Mapped[list[Group]] = relationship(
+        secondary=user_group,
+        back_populates="users",
+    )

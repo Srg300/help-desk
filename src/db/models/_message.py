@@ -22,9 +22,7 @@ class Message(Base):
     task_id: Mapped[int64 | None] = mapped_column(ForeignKey("task.id"))
     ticket_id: Mapped[int64 | None] = mapped_column(ForeignKey("ticket.id"))
 
-
-    ticket: Mapped[Ticket] = relationship()
     author: Mapped[User] = relationship(back_populates="messages")
-    # task: Mapped[Task | None] = relationship(
-    #     back_populates="message",
-    # )
+
+    ticket: Mapped[Ticket | None] = relationship()
+    task: Mapped[Task | None] = relationship()

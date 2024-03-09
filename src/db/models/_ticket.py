@@ -43,6 +43,8 @@ class Ticket(Base):
         primaryjoin="foreign(Ticket.worker_id)==User.id"
     )
 
-    
-    # group: Mapped[Group] = relationship(back_populates="ticket")
+    group: Mapped[Group] = relationship(
+        back_populates="tickets",
+        foreign_keys=[group_id],
+    )
     # messages: Mapped[list[Message]] = relationship(back_populates="ticket")
