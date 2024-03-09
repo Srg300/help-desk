@@ -24,5 +24,11 @@ class Message(Base):
 
     author: Mapped[User] = relationship(back_populates="messages")
 
-    ticket: Mapped[Ticket | None] = relationship()
-    task: Mapped[Task | None] = relationship()
+    ticket: Mapped[Ticket | None] = relationship(
+        back_populates="messages",
+        foreign_keys=[ticket_id]
+    )
+    task: Mapped[Task | None] = relationship(
+        back_populates="messages",
+        foreign_keys=[task_id]
+    )

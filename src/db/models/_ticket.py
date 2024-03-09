@@ -47,4 +47,4 @@ class Ticket(Base):
         back_populates="tickets",
         foreign_keys=[group_id],
     )
-    # messages: Mapped[list[Message]] = relationship(back_populates="ticket")
+    messages: Mapped[list[Message]] = relationship(back_populates="ticket")
