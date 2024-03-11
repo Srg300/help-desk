@@ -3,7 +3,7 @@ from typing import Annotated
 from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from core.exception import ModelAlreadyExistsError
+from core.errors import ModelAlreadyExistsError
 from db.base.dependencies import get_session
 from db.models import User
 

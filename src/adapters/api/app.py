@@ -3,11 +3,12 @@ from starlette.middleware.cors import CORSMiddleware
 
 from settings import AppSettings, get_settings
 
-from . import role, user
+from . import auth, role, user
 
 _routers = [
     role.router,
     user.router,
+    auth.router,
 ]
 
 

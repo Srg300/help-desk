@@ -9,9 +9,8 @@ class AuthSettings(BaseSettings):
     model_config = SettingsConfigDict(env_prefix="auth_")
 
     secret_key: str
-    algorithm: Literal["RS256"] = "RS256"
+    algorithm: Literal["HS256"] = "HS256"
 
-    password_schemes: Sequence[str] = ["django_pbkdf2_sha256"]
     jwt_access_lifetime: timedelta = timedelta(minutes=30)
     jwt_refresh_lifetime: timedelta = timedelta(days=30)
 

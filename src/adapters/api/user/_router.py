@@ -6,14 +6,14 @@ from core.domain.user.command import (
     UserCreateCommand,
 )
 from core.domain.user.service import UserService
-from core.exception import ModelAlreadyExistsError
+from core.errors import ModelAlreadyExistsError
 
 from ._exception import user_exist, user_not_found
 from ._schemas import UserCreateSchema, UserResponse
 
 router = APIRouter(
-    tags=["auth"],
-    prefix="/auth",
+    tags=["user"],
+    prefix="/user",
 )
 
 
