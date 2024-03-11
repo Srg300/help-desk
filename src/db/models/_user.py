@@ -2,7 +2,7 @@ from typing import TYPE_CHECKING
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from db.base import Base, created_datetime, str_256, updated_datetime
+from db.base import Base, str_256
 from db.models._group import user_group
 from db.models._task import Task
 from db.models._ticket import Group, Ticket

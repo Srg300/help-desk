@@ -19,3 +19,9 @@ class UserService:
         id_: int,
     ) -> User:
         return await self._repository.get(id_=id_)
+
+    async def get_by_email(
+        self,
+        email: str,
+    ) -> User:
+        return await self._repository.get(email=email)

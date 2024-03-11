@@ -11,3 +11,13 @@ class ModelAlreadyExistsError:
 class NotFoundCoreError:
     identifier: str
     message: str
+
+
+@dataclasses.dataclass
+class AuthenticationFailed:
+    pass
+
+
+@dataclasses.dataclass
+class PermissionCoreError:
+    pass
