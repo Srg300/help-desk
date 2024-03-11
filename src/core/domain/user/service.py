@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Annotated
 
 from fastapi import Depends
@@ -25,3 +26,8 @@ class UserService:
         email: str,
     ) -> User:
         return await self._repository.get(email=email)
+
+    async def update_last_login_date(self, user: User, now: datetime) -> None:
+        user.last_login = now
+        self._session.add(user)
+        await self._session.commit()

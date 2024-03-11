@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import TYPE_CHECKING
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -22,6 +23,7 @@ class User(Base):
 
     phone: Mapped[str_256 | None] = mapped_column(unique=True)
     telegram_id: Mapped[str_256 | None] = mapped_column(unique=True)
+    last_login: Mapped[datetime | None]
 
     is_active: Mapped[bool] = mapped_column(default=False)
     is_superuser: Mapped[bool] = mapped_column(default=False)
