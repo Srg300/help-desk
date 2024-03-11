@@ -92,7 +92,7 @@ class AuthService:
     async def tokens(self, user: User) -> AuthTokensDTO:
         now = datetime.now(tz=timezone.utc)
         access_dto = self._access_token_dto(user=user, now=now)
-
+        await self._service.update_last_login_date(user=user, now=now)
         payload = access_dto.model_dump()
 
         return AuthTokensDTO(
