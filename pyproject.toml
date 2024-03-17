@@ -145,6 +145,9 @@ ignore = [
     "EXE002",
     "TD003",
     "FIX002",
+    "B008",  # do not perform function calls in argument defaults
+    "W191",  # indentation contains tabs
+    "B904",  # Allow raising exceptions without from e, for HTTPException
 ]
 
 [tool.ruff.per-file-ignores]
