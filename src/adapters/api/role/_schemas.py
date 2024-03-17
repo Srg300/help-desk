@@ -3,10 +3,14 @@ from pydantic import BaseModel
 from core.domain.role.dto import RoleCreateDto, RoleUpdateDto
 
 
-class RoleCreateSchema(RoleCreateDto): ...
+class RoleCreateSchema(RoleCreateDto):
+    name: str
+    weight: int
 
 
-class RoleUpdateSchema(RoleUpdateDto): ...
+class RoleUpdateSchema(RoleUpdateDto):
+    name: str
+    weight: int
 
 
 class RoleResponse(BaseModel):
