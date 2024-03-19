@@ -1,9 +1,9 @@
 from typing import Annotated
 
-import jwt
-from fastapi import Depends, HTTPException
+from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
-from jwt import PyJWTError
+from jose import JWTError, jwt
+from pydantic import ValidationError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.domain.user.repository import UserRepository
@@ -31,7 +31,7 @@ async def get_current_user(
 
     try:
         payload = jwt.decode(
-            jwt=token,
+            token=token,
             key=auth_settings.secret_key,
             algorithms=[
                 auth_settings.algorithm,
@@ -45,8 +45,8 @@ async def get_current_user(
 
         token_data = UserFromToken(user_id=user_id)
 
-    except PyJWTError as err:
-        raise credentials_exception from err
+    except (JWTError, ValidationError):
+        raise credentials_exception
 
     user = await repository.get(id_=token_data.user_id)
 
