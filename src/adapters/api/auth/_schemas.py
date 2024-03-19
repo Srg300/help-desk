@@ -14,6 +14,17 @@ class JWTCreateSchema(BaseSchema):
             password=self.password,
         )
 
+    model_config = {
+        "json_schema_extra": {
+            "examples": [
+                {
+                    "email": "example@example.com",
+                    "password": "1234",
+                }
+            ]
+        }
+    }
+
 
 class JWTSchema(BaseSchema):
     access: str
