@@ -13,16 +13,18 @@ class UserCreateSchema(BaseModel):
             password=self.password,
             username=self.email.split("@")[0],
         )
+
     model_config = {
         "json_schema_extra": {
             "examples": [
                 {
                     "email": "example@example.com",
                     "password": "1234",
-                }
-            ]
-        }
+                },
+            ],
+        },
     }
+
 
 class UserResponse(BaseModel):
     id: int

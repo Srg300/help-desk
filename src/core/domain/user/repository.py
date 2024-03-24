@@ -1,24 +1,31 @@
+from typing import Annotated
+
+from fastapi import Depends
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from db.base.dependencies import get_session
 from db.models import User
 
 from .dto import UserCreateDto
 
 
 class UserRepository:
-    def __init__(self, session: AsyncSession) -> None:
+    def __init__(self, session: Annotated[AsyncSession, Depends(get_session)]) -> None:
         self._session = session
 
     async def create(
         self,
         dto: UserCreateDto,
     ) -> User:
-        return User(
+        user = User(
             username=dto.username,
             hashed_password=dto.hashed_password,
             email=dto.email,
         )
+        self._session.add(user)
+        await self._session.commit()
+        return user
 
     async def get(
         self,

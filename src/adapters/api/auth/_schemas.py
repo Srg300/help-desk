@@ -1,10 +1,10 @@
-from pydantic import SecretStr
+from pydantic import BaseModel, SecretStr
 
 from adapters.api import BaseSchema
 from core.domain.auth.dto import JWTCreateDTO
 
 
-class JWTCreateSchema(BaseSchema):
+class JWTCreateSchema(BaseModel):
     email: str
     password: SecretStr
 
@@ -20,9 +20,9 @@ class JWTCreateSchema(BaseSchema):
                 {
                     "email": "example@example.com",
                     "password": "1234",
-                }
-            ]
-        }
+                },
+            ],
+        },
     }
 
 
